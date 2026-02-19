@@ -2,5 +2,18 @@
 name = "helios-core"
 version = "0.1.0"
 edition = "2024"
+authors = ["Matthew Hambrecht <hambrechtmatt@gmail.com>"]
+
+[[bin]]
+name = "helios-core"
+test = false
+bench = false
 
 [dependencies]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
