@@ -1,0 +1,25 @@
+{
+  "name": "Helios Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "serayuzgur.crates",
+        "nefrob.vscode-just-syntax",
+        "vadimcn.vscode-lldb",
+        "ms-vscode.makefile-tools",
+        "tomrijndorp.find-it-faster",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  },
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode"
+}
