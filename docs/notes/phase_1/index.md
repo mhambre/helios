@@ -1,4 +1,4 @@
-# Architecture
+# Phase #1 Notes
 
 ### Table of Contents
 - [N/A]()

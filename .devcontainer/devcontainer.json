@@ -19,7 +19,7 @@
       }
     }
   },
-    "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "workspaceFolder": "/workspace",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "vscode"
 }

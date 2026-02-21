@@ -10,9 +10,7 @@ RUN apt-get update \
     curl \
     git \
     ripgrep \
-    just \
     gdb \
-    qemu-img \
   && rm -rf /var/lib/apt/lists/*
 
 USER vscode
@@ -23,13 +21,15 @@ ENV CARGO_HOME=/home/vscode/.cargo \
 
 # Install rustfmt and clippy for code formatting and linting
 RUN rustup toolchain install nightly || true \
-    && rustup component add rust-src rustfmt clippy --toolchain nightly || true \
+    && rustup component add rust-src clippy --toolchain nightly || true \
+    && rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt || true \
     && cargo fetch || true
 
 # Install cargo devex tools
 RUN cargo install --locked \
     cargo-udeps \
     cargo-nextest \
+    just \
     just-lsp
 
 WORKDIR /workspace
