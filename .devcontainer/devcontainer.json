@@ -12,7 +12,8 @@
         "vadimcn.vscode-lldb",
         "ms-vscode.makefile-tools",
         "tomrijndorp.find-it-faster",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions"
       ],
       "settings": {
         "editor.formatOnSave": true,
