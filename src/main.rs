@@ -7,6 +7,7 @@
 /// it has loaded the kernel.
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
+    #[allow(clippy::empty_loop)]
     loop {}
 }
 
@@ -15,5 +16,6 @@ pub extern "C" fn _start() -> ! {
 /// compile and run our code without crashing immediately on panic.
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
+    #[allow(clippy::empty_loop)]
     loop {}
 }
