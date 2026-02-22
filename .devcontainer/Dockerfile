@@ -10,9 +10,13 @@ RUN apt-get update \
   curl \
   git \
   grub-efi-amd64 \
+  grub-common \
+  grub-pc-bin \
+  xorriso \
   efibootmgr \
   parted \
   udev \
+  mtools \
   && rm -rf /var/lib/apt/lists/*
 
 USER vscode

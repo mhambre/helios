@@ -7,7 +7,7 @@ include .env
 # General vars
 CARGO = cargo
 __MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
-PROJECT_DIR   := $(patsubst %/,%,$(dir $(__MKFILE_PATH)))
+PROJECT_DIR := $(patsubst %/,%,$(dir $(__MKFILE_PATH)))
 
 # Binary-Product Crates
 KERNEL_CRATE = $(PROJECT)-core
@@ -55,15 +55,17 @@ release-iso-serial ris: kernel-release
 # Run QEMU with debug ISO (serial console)
 .PHONY: qemu-debug-serial qds
 qemu-debug-serial qds: debug-iso-serial
-	$(BUILD_SCRIPTS)/run-qemu.sh
+	@echo $(ISO_BUILD_DIR)/$(PROJECT).iso
+	$(QEMU_EXECUTABLE) -cdrom $(ISO_BUILD_DIR)/$(PROJECT).iso -m $(QEMU_MEM) -nographic -serial mon:stdio
 
 # Run QEMU with release ISO (serial console)
 .PHONY: qemu-release-serial qrs
 qemu-release-serial qrs: release-iso-serial
-	$(BUILD_SCRIPTS)/run-qemu.sh
+	$(QEMU_EXECUTABLE) -cdrom $(ISO_BUILD_DIR)/$(PROJECT).iso -m $(QEMU_MEM) -nographic -serial mon:stdio
 
 # === Clean Targets ===
 .PHONY: clean
 clean:
 	$(CARGO) clean
 	rm -rf build/*
+

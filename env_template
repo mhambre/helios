@@ -12,3 +12,7 @@ PROJECT_DIR="$(dirname "$__ENV_FULL_PATH")"
 GRUB_TARGET=${ARCH}-efi
 BUILD_DIR=${PROJECT_DIR}/build
 ISO_BUILD_DIR=${BUILD_DIR}/iso
+
+## Run Variables
+QEMU_MEM=128M
+QEMU_EXECUTABLE=qemu-system-${ARCH}
