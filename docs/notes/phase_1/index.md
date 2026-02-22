@@ -1,6 +1,8 @@
 # Phase #1 Notes
 
 ### Table of Contents
-- [N/A]()
+- [Core-Only Binary](./core-only-binary.md)
+- [Booting Simple Kernel](./core-only-binary.md)
 
+---
 [[Previous Page]](../index.md) [[Next Page]](stub)

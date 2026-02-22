@@ -44,18 +44,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            cargo_lock:
+              - 'Cargo.lock'
+
+      - name: Skip udeps (Cargo.lock unchanged)
+        if: github.event_name != 'workflow_dispatch' && steps.filter.outputs.cargo_lock != 'true'
+        run: echo "Skipping cargo-udeps: Cargo.lock did not change"
+
       - name: Install Rust (nightly)
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: rust-src
 
       - name: Cache cargo + target
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
         uses: Swatinem/rust-cache@v2
         with:
           key: udeps
 
       - name: Install cargo-udeps
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
         run: cargo install cargo-udeps --locked
 
       - name: Run cargo udeps
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
         run: cargo +nightly udeps --workspace --all-targets

@@ -2,3 +2,10 @@
 f = "+nightly fmt -- --check"
 c = "clippy --all-targets --all-features -- -D warnings"
 u = "+nightly udeps --workspace --all-targets"
+
+[unstable]
+json-target-spec = true # So we can use a custom target
+build-std = [
+    "core",
+    "compiler_builtins",
+] # So we can use the core lib (Result, Option, etc.) without the full standard library
