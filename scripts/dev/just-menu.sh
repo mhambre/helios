@@ -10,6 +10,8 @@ if [[ ! -f "${JUSTFILE_PATH}" ]]; then
 	exit 1
 fi
 
+# shellcheck disable=SC1091
+# shellcheck source=../scripts/utils/color.sh
 . "${PROJECT_DIR}/scripts/utils/color.sh"
 
 print_header() {
@@ -101,7 +103,7 @@ render_menu() {
 	local output
 	output="$(print_tasks)"
 
-	if grep -q '^NO_TASKS$' <<< "${output}"; then
+	if grep -q '^NO_TASKS$' <<<"${output}"; then
 		echo "${YELLOW}No public tasks found in ${JUSTFILE_PATH}.${RESET}"
 		return
 	fi
@@ -116,7 +118,7 @@ render_menu() {
 		fi
 
 		printf "  ${CYAN}%-18s${RESET} %s\n" "${b}" "${c}"
-	done <<< "${output}"
+	done <<<"${output}"
 }
 
 print_header

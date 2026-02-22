@@ -3,6 +3,20 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "privileged": true,
+  "runArgs": [
+    "--device=/dev/kvm",
+    "--cap-add=NET_ADMIN",
+    "--device=/dev/loop-control",
+    "--device=/dev/loop0",
+    "--device=/dev/loop1",
+    "--device=/dev/loop2",
+    "--device=/dev/loop3",
+    "--device=/dev/loop4",
+    "--device=/dev/loop5",
+    "--device=/dev/loop6",
+    "--device=/dev/loop7"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [

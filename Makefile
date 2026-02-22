@@ -1,11 +1,13 @@
 # Helios Makefile
 
-# === Variables ===
+# ===== Variables =====
 
 include .env
 
 # General vars
 CARGO = cargo
+__MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+PROJECT_DIR   := $(patsubst %/,%,$(dir $(__MKFILE_PATH)))
 
 # Binary-Product Crates
 KERNEL_CRATE = $(PROJECT)-core
@@ -19,28 +21,49 @@ TARGET_DIR = target/$(TARGET)
 CORE_BIN = $(KERNEL_CRATE).elf
 
 # Script Locations
-BUILD_SCRIPTS = ./scripts/build
+BUILD_SCRIPTS = $(PROJECT_DIR)/scripts/build
 
-
-# === Targets ===
+# ===== Targets =====
 
 # == Build Targets ==
+# Build kernel in debug mode
 .PHONY: kernel-debug kd
 kernel-debug kd:
 	$(CARGO) +nightly build --target $(TARGET_JSON)
 
+# Build kernel in release mode
 .PHONY: kernel-release kr
 kernel-release kr:
 	$(CARGO) +nightly build --release --target $(TARGET_JSON)
 
 # == ISO Targets ==
-.PHONY: debug-iso di
-debug-iso di: kernel-debug
-	cp $(TARGET_DIR)/debug/$(CORE_BIN) template/iso/boot/
-	$(BUILD_SCRIPTS)/build-iso.sh
+# Build ISO with serial console for debugging
+.PHONY: debug-iso-serial dis
+debug-iso-serial dis: kernel-debug
+	mkdir -p $(ISO_BUILD_DIR)-stage/boot/
+	cp $(TARGET_DIR)/debug/$(CORE_BIN) $(ISO_BUILD_DIR)-stage/boot/
+	$(BUILD_SCRIPTS)/build-iso.sh serial
 
-.PHONY: release-iso ri
-release-iso ri: kernel-release
-	cp $(TARGET_DIR)/release/$(CORE_BIN) template/iso/boot/
-	$(BUILD_SCRIPTS)/build-iso.sh
+# Build release ISO with serial console
+.PHONY: release-iso-serial ris
+release-iso-serial ris: kernel-release
+	mkdir -p $(ISO_BUILD_DIR)-stage/boot/
+	cp $(TARGET_DIR)/release/$(CORE_BIN) $(ISO_BUILD_DIR)-stage/boot/
+	$(BUILD_SCRIPTS)/build-iso.sh serial
 
+# == Run Targets ==
+# Run QEMU with debug ISO (serial console)
+.PHONY: qemu-debug-serial qds
+qemu-debug-serial qds: debug-iso-serial
+	$(BUILD_SCRIPTS)/run-qemu.sh
+
+# Run QEMU with release ISO (serial console)
+.PHONY: qemu-release-serial qrs
+qemu-release-serial qrs: release-iso-serial
+	$(BUILD_SCRIPTS)/run-qemu.sh
+
+# === Clean Targets ===
+.PHONY: clean
+clean:
+	$(CARGO) clean
+	rm -rf build/*
