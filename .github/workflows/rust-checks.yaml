@@ -6,6 +6,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   fmt:
     name: Format
@@ -37,7 +41,6 @@ jobs:
       - name: Run clippy (deny warnings)
         run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
-
   udeps:
     name: Unused Dependencies
     runs-on: ubuntu-latest
@@ -52,25 +55,26 @@ jobs:
               - 'Cargo.lock'
 
       - name: Skip udeps (Cargo.lock unchanged)
-        if: github.event_name != 'workflow_dispatch' && steps.filter.outputs.cargo_lock != 'true'
-        run: echo "Skipping cargo-udeps: Cargo.lock did not change"
+        if: "${{ github.event_name != 'workflow_dispatch' && steps.filter.outputs.cargo_lock != 'true' }}"
+        run: |
+          echo "Skipping cargo-udeps: Cargo.lock did not change"
 
       - name: Install Rust (nightly)
-        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
+        if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: rust-src
 
       - name: Cache cargo + target
-        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
+        if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
         uses: Swatinem/rust-cache@v2
         with:
           key: udeps
 
       - name: Install cargo-udeps
-        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
+        if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
         run: cargo install cargo-udeps --locked
 
       - name: Run cargo udeps
-        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true'
+        if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
         run: cargo +nightly udeps --workspace --all-targets
