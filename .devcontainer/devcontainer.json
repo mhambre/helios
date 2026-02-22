@@ -13,7 +13,10 @@
         "ms-vscode.makefile-tools",
         "tomrijndorp.find-it-faster",
         "tamasfe.even-better-toml",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+        "editorconfig.editorconfig"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -21,7 +24,17 @@
         "rust-analyzer.check.extraArgs": [
           "--all-targets",
           "--all-features"
-        ]
+        ],
+        "[shellscript]": {
+          "editor.defaultFormatter": "foxundermoon.shell-format",
+          "editor.formatOnSave": true
+        },
+        "shellcheck.enable": true,
+        "shellcheck.run": "onSave",
+        "shellcheck.executablePath": "shellcheck",
+        "shellformat.path": "shfmt",
+        "shellformat.useEditorConfig": true,
+        "shellformat.flag": "-i 2 -ci -sr"
       }
     }
   },

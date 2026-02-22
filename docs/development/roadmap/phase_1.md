@@ -1,4 +1,4 @@
-# Phase #1 (Simple Bootable Kernel)
+# Phase #1 - Simple Bootable Kernel
 
 - [X] Freestanding binary
 - [ ] Bootable via GRUB in QEMU with virt drivers
@@ -7,4 +7,4 @@
 - [ ] Basic Memory Management
 
 ---
-[[Previous Page]](../index.md) [[Next Page]](phase_2.md)
+[[Index]](index.md) [[Next Page]](phase_2.md)

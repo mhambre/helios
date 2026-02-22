@@ -24,3 +24,13 @@ target
 # Added by cargo
 
 /target
+
+# User config
+
+.env
+
+# Build artifacts
+
+template/iso/boot/helios-core.elf
+build/
+!scripts/build

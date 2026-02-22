@@ -5,4 +5,4 @@
 - [Booting Simple Kernel](./core-only-binary.md)
 
 ---
-[[Previous Page]](../index.md) [[Next Page]](stub)
+[[Previous Page]](../index.md)

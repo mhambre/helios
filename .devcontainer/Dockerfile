@@ -11,7 +11,9 @@ RUN apt-get update \
     git \
     ripgrep \
     gdb \
-    fzf
+    fzf \
+    xorriso \
+    grub-common \
   && rm -rf /var/lib/apt/lists/*
 
 USER vscode

@@ -5,4 +5,4 @@
 - [Notes](./notes/index.md)
 
 ---
-[[Previous Page]](../README.md) [[Next Page]](./architecture/index.md)
+[[Previous Page]](../README.md)

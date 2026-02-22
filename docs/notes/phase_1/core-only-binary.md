@@ -85,6 +85,16 @@ build-std = [
 ```
 
 Now you should be able to build the binary properly and this freestanding ELF binary will be the entrypoint our bootloader will use for our operating system.
+o
+
+
+### Resources
+
+- [Rust Core](https://doc.rust-lang.org/core/)
+- [Rust Targets](https://doc.rust-lang.org/beta/rustc/targets/index.html)
+- [Rust Binaries w/out Std](https://medium.com/@theopinionatedev/inside-rusts-no-main-world-how-binaries-run-without-std-a0d15d9dcb11)
+- [Name mangling](https://en.wikipedia.org/wiki/Name_mangling)
+- [Red Zone](https://en.wikipedia.org/wiki/Red_zone_(computing))
 
 ---
-[[Previous Page]](./index.md) [[Next Page]](booting-simple-kernel.md)
+[[Index]](./index.md) [[Next Page]](booting-simple-kernel.md)
