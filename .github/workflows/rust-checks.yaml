@@ -37,7 +37,6 @@ jobs:
       - name: Run clippy (deny warnings)
         run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
-
   udeps:
     name: Unused Dependencies
     runs-on: ubuntu-latest
@@ -53,7 +52,8 @@ jobs:
 
       - name: Skip udeps (Cargo.lock unchanged)
         if: "${{ github.event_name != 'workflow_dispatch' && steps.filter.outputs.cargo_lock != 'true' }}"
-        run: echo "Skipping cargo-udeps: Cargo.lock did not change"
+        run: |
+          echo "Skipping cargo-udeps: Cargo.lock did not change"
 
       - name: Install Rust (nightly)
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
