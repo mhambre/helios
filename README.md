@@ -12,5 +12,5 @@
   A Lightweight Operating System Built for Object Storage
 </p>
 
-# Table of Contents
+## Table of Contents
 - [Documentation](docs/index.md)
