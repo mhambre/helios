@@ -21,6 +21,9 @@ CORE_BIN = $(KERNEL_CRATE).elf
 # Script Locations
 BUILD_SCRIPTS = $(PROJECT_DIR)/scripts/build
 
+# Environment Variable Overrides
+ARCH = $(shell uname -m)
+
 # ===== Targets =====
 
 # == Build Targets ==
