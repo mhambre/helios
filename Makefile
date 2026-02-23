@@ -15,9 +15,7 @@ DAEMON_CRATE = $(PROJECT)d
 CLIENT_CRATE = $(PROJECT)ctl
 
 # Kernel Build Target
-TARGET = $(ARCH)-$(PROJECT)
-TARGET_JSON = template/$(TARGET).json
-TARGET_DIR = target/$(TARGET)
+TARGET_DIR = target/$(RUST_TARGET)
 CORE_BIN = $(KERNEL_CRATE).elf
 
 # Script Locations
@@ -29,14 +27,14 @@ BUILD_SCRIPTS = $(PROJECT_DIR)/scripts/build
 # Build kernel in debug mode
 .PHONY: kernel-debug kd
 kernel-debug kd:
-	$(CARGO) +nightly build --target $(TARGET_JSON)
+	$(CARGO) +nightly build --target $(RUST_TARGET_JSON)
 	grub-file --is-x86-multiboot2 $(TARGET_DIR)/debug/$(CORE_BIN) && echo "Kernel binary is Multiboot2 compliant" || (echo "Kernel binary is not Multiboot2 compliant" && exit 1)
 	@echo "Kernel built successfully in debug mode: $(TARGET_DIR)/debug/$(CORE_BIN)"
 
 # Build kernel in release mode
 .PHONY: kernel-release kr
 kernel-release kr:
-	$(CARGO) +nightly build --release --target $(TARGET_JSON)
+	$(CARGO) +nightly build --release --target $(RUST_TARGET_JSON)
 	grub-file --is-x86-multiboot2 $(TARGET_DIR)/release/$(CORE_BIN) && echo "Kernel binary is Multiboot2 compliant" || (echo "Kernel binary is not Multiboot2 compliant" && exit 1)
 	@echo "Kernel built successfully in release mode: $(TARGET_DIR)/release/$(CORE_BIN)"
 

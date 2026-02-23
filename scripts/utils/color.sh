@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2034
+# Color variables in this file are intentionally consumed by scripts that source it.
+
 if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
 	RESET="$(tput sgr0)"
 	BOLD="$(tput bold)"

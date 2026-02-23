@@ -11,7 +11,7 @@ ISO_SECTOR_COUNT=$((ISO_SIZE_BYTES / BOOT_SECTOR_SIZE))
 # shellcheck disable=SC1091
 # shellcheck source=../utils/color.sh
 . "${SCRIPT_DIR}/../utils/color.sh"
-# shellcheck disable=SC2016
+# shellcheck disable=SC1091
 # shellcheck source=../../.env
 . "${SCRIPT_DIR}/../../.env"
 

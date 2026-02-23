@@ -1,7 +1,10 @@
 # Common Developer Tasks
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
+PROJECT := "helios"
+ARCH := `uname -m`
 PROJECT_DIR := justfile_directory()
+RUST_TARGET_JSON := PROJECT_DIR + "/template/" + ARCH + "-" + PROJECT + ".json"
 
 _default:
   {{PROJECT_DIR}}/scripts/dev/just-menu.sh
@@ -23,9 +26,9 @@ _run name:
   @if just "{{name}}"; then \
       just _pass "{{name}}"; \
     else \
-      rc=$$?; \
+      rc=$?; \
       just _fail "{{name}}"; \
-      exit "$$rc"; \
+      exit "$rc"; \
     fi
 
 # @section General Code Quality
@@ -56,23 +59,23 @@ rust-check:
 
 # Runs clippy and fails on warnings
 rust-clippy:
-  @just _stage rust-clippy "cargo clippy"
-  cargo clippy --all-targets --all-features -- -D warnings
+  @just _stage rust-clippy "cargo +nightly clippy"
+  cargo +nightly --config .cargo/config.toml clippy --target {{RUST_TARGET_JSON}} --all-features -- -D warnings
 
 # Runs cargo-udeps with nightly
 rust-udeps:
   @just _stage rust-udeps "cargo +nightly udeps"
-  cargo +nightly udeps --workspace --all-targets
+  RUSTFLAGS="-Zunstable-options" cargo +nightly --config .cargo/config.toml udeps --workspace --target {{RUST_TARGET_JSON}}
 
 # Formats all Rust files
 rust-fmt:
   @just _stage rust-fmt "cargo fmt"
-  cargo +nightly fmt
+  cargo +nightly --config .cargo/config.toml fmt
 
 # Runs cargo fmt in check mode, which returns non-zero if any files are not formatted
 rust-fmt-check:
   @just _stage rust-fmt-check "cargo fmt --check"
-  cargo +nightly fmt -- --check
+  cargo +nightly --config .cargo/config.toml fmt -- --check
 
 # Runs shellcheck on all *.sh files everywhere except pruned dirs
 shell-check:
