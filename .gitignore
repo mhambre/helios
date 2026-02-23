@@ -31,3 +31,4 @@ target
 iso/
 build/
 !scripts/build
+src/linker.ld
