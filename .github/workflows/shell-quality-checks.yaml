@@ -17,19 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install just
+        uses: taiki-e/install-action@just
+
       - name: Install shellcheck
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck
 
       - name: Run shellcheck
-        run: |
-          mapfile -t shell_files < <(git ls-files '*.sh')
-          if [ "${#shell_files[@]}" -eq 0 ]; then
-            echo "No shell scripts found"
-            exit 0
-          fi
-          shellcheck -x "${shell_files[@]}"
+        run: just shell-check
 
   shfmt:
     name: shfmt
@@ -37,16 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install just
+        uses: taiki-e/install-action@just
+
       - name: Install shfmt
         run: |
           sudo apt-get update
           sudo apt-get install -y shfmt
 
       - name: Check formatting
-        run: |
-          mapfile -t shell_files < <(git ls-files '*.sh')
-          if [ "${#shell_files[@]}" -eq 0 ]; then
-            echo "No shell scripts found"
-            exit 0
-          fi
-          shfmt -d -i 2 -ci -sr "${shell_files[@]}"
+        run: just shell-fmt-check

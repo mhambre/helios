@@ -1,15 +1,99 @@
 # Common Developer Tasks
-set shell := ["bash", "-lc"]
+set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
 PROJECT_DIR := justfile_directory()
 
-default:
-    {{PROJECT_DIR}}/scripts/dev/just-menu.sh
+_default:
+  {{PROJECT_DIR}}/scripts/dev/just-menu.sh
 
-# @section DevEx Tasks
+_start name:
+  @printf "\033[0;33m==> %s...\033[0m\n" "{{name}}"
 
-# Code Quality Checks
+_stage name stage:
+  @printf "\033[0;36m   • %s:\033[0m %s\n" "{{name}}" "{{stage}}"
+
+_pass name:
+  @printf "\033[0;32m☑ PASS\033[0m %s\n" "{{name}}"
+
+_fail name:
+  @printf "\033[0;31m☒ FAIL\033[0m %s\n" "{{name}}"
+
+_run name:
+  @just _start "{{name}}"
+  @if just "{{name}}"; then \
+      just _pass "{{name}}"; \
+    else \
+      rc=$$?; \
+      just _fail "{{name}}"; \
+      exit "$$rc"; \
+    fi
+
+# @section General Code Quality
+
+# Run all code-quality related checks for all languages
 check:
-    cargo +nightly fmt -- --check
-    cargo clippy --all-targets --all-features -- -D warnings
-    cargo +nightly udeps --workspace --all-targets
+  @just _run rust-check
+  @just _run shell-check
+  @just _run rust-fmt-check
+  @just _run shell-fmt-check
+
+# Format all code for all languages
+fmt:
+  @just _run rust-fmt
+  @just _run shell-fmt
+
+# Check formatting for all languages
+fmt-check:
+  @just _run rust-fmt-check
+  @just _run shell-fmt-check
+
+# @section Fine-grained Code Quality
+
+# Runs clippy and udeps to check for lints and unused dependencies
+rust-check:
+  @just _run rust-clippy
+  @just _run rust-udeps
+
+# Runs clippy and fails on warnings
+rust-clippy:
+  @just _stage rust-clippy "cargo clippy"
+  cargo clippy --all-targets --all-features -- -D warnings
+
+# Runs cargo-udeps with nightly
+rust-udeps:
+  @just _stage rust-udeps "cargo +nightly udeps"
+  cargo +nightly udeps --workspace --all-targets
+
+# Formats all Rust files
+rust-fmt:
+  @just _stage rust-fmt "cargo fmt"
+  cargo +nightly fmt
+
+# Runs cargo fmt in check mode, which returns non-zero if any files are not formatted
+rust-fmt-check:
+  @just _stage rust-fmt-check "cargo fmt --check"
+  cargo +nightly fmt -- --check
+
+# Runs shellcheck on all *.sh files everywhere except pruned dirs
+shell-check:
+  @just _stage shell-check "shellcheck"
+  find . \
+    \( -path './.git' -o -path './target' -o -path './build' \) -prune -o \
+    -type f -name '*.sh' -print0 \
+    | xargs -0 -r shellcheck
+
+# Formats all shell files
+shell-fmt:
+  @just _stage shell-fmt "shfmt -w"
+  find . \
+    \( -path './.git' -o -path './target' -o -path './build' \) -prune -o \
+    -type f -name '*.sh' -print0 \
+    | xargs -0 -r shfmt -w
+
+# Checks formatting for *.sh everywhere except pruned dirs
+shell-fmt-check:
+  @just _stage shell-fmt-check "shfmt -d"
+  find . \
+    \( -path './.git' -o -path './target' -o -path './build' \) -prune -o \
+    -type f -name '*.sh' -print0 \
+    | xargs -0 -r shfmt -d >/dev/null

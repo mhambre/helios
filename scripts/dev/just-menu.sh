@@ -25,7 +25,7 @@ print_header() {
 print_tasks() {
 	awk '
 		function trim(s) {
-			gsub(/^[ \t]+|[ \t]+$/, "", s)
+			gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
 			return s
 		}
 
@@ -35,16 +35,16 @@ print_tasks() {
 			count = 0
 		}
 
-		/^\s*#\s*@section\s+/ {
+		/^[[:space:]]*#[[:space:]]*@section[[:space:]]+/ {
 			line = $0
-			sub(/^\s*#\s*@section\s+/, "", line)
+			sub(/^[[:space:]]*#[[:space:]]*@section[[:space:]]+/, "", line)
 			section = trim(line)
 			next
 		}
 
-		/^\s*#\s*/ {
+		/^[[:space:]]*#[[:space:]]*/ {
 			line = $0
-			sub(/^\s*#\s?/, "", line)
+			sub(/^[[:space:]]*#[[:space:]]?/, "", line)
 			line = trim(line)
 
 			if (line == "" || line ~ /^@section\s+/) {
@@ -57,9 +57,15 @@ print_tasks() {
 			next
 		}
 
-		/^\s*[A-Za-z_][A-Za-z0-9_-]*\s*:/ {
+		/^[[:space:]]*[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:/ {
 			line = $0
-			sub(/^\s*/, "", line)
+			sub(/^[[:space:]]*/, "", line)
+
+			if (line ~ /^[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:=/) {
+				pending_doc = ""
+				next
+			}
+
 			split(line, parts, ":")
 			name = trim(parts[1])
 

@@ -22,6 +22,10 @@ indent_size = 2
 [Makefile]
 indent_style = tab
 
+[Justfile]
+indent_style = space
+indent_size = 2
+
 [*.{json,toml}]
 indent_style = space
 indent_size = 2
