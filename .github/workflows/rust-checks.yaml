@@ -37,10 +37,10 @@ jobs:
       - name: Install just
         uses: taiki-e/install-action@just
 
-      - name: Install Rust (stable)
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust (nightly)
+        uses: dtolnay/rust-toolchain@nightly
         with:
-          components: clippy
+          components: clippy, rust-src
 
       - name: Cache cargo + target
         uses: Swatinem/rust-cache@v2
