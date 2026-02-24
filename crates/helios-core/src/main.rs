@@ -10,7 +10,6 @@ const MULTIBOOT2_END_TAG_SIZE: u32 = 1 << 3; // Size of the end tag
 #[repr(C)]
 #[repr(align(8))] // Align the header at an 8 byte boundary, as required by the Multiboot specification
 struct MultibootHeader {
-    // Define the fields of the Multiboot information structure as needed
     magic: u32,
     architecture: u32,
     length: u32,

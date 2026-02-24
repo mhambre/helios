@@ -1,0 +1,23 @@
+[package]
+name = "helios-core"
+version = "0.1.0"
+edition = "2024"
+authors = ["Matthew Hambrecht <hambrechtmatt@gmail.com>"]
+build = "build.rs"
+
+[[bin]]
+name = "helios-core"
+test = false
+bench = false
+
+[dependencies]
+
+[build-dependencies]
+dotenvy = "0.15.0"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1

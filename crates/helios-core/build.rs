@@ -16,7 +16,7 @@ fn main() {
     };
 
     let template =
-        fs::read_to_string(PathBuf::from(&project_dir).join("template/linker.ld.in")).expect("read linker.ld.in");
+        fs::read_to_string(PathBuf::from(&project_dir).join("../../template/linker.ld.in")).expect("read linker.ld.in");
     let rendered = template
         .replace("__OUTPUT_FORMAT__", out_format)
         .replace("__OUTPUT_ARCH__", out_arch);

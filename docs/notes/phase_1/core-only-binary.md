@@ -86,8 +86,6 @@ build-std = [
 ```
 
 Now you should be able to build the binary properly and this freestanding ELF binary will be the entrypoint our bootloader will use for our operating system.
-o
-
 
 ### Resources
 

@@ -14,7 +14,6 @@ RUN apt-get update \
   grub-pc-bin \
   xorriso \
   efibootmgr \
-  parted \
   udev \
   mtools \
   && rm -rf /var/lib/apt/lists/*
