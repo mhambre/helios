@@ -10,23 +10,9 @@ if [[ ! -f "${JUSTFILE_PATH}" ]]; then
 	exit 1
 fi
 
-if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
-	RESET="$(tput sgr0)"
-	BOLD="$(tput bold)"
-	DIM="$(tput dim)"
-	BLUE="$(tput setaf 4)"
-	CYAN="$(tput setaf 6)"
-	GREEN="$(tput setaf 2)"
-	YELLOW="$(tput setaf 3)"
-else
-	RESET=""
-	BOLD=""
-	DIM=""
-	BLUE=""
-	CYAN=""
-	GREEN=""
-	YELLOW=""
-fi
+# shellcheck disable=SC1091
+# shellcheck source=../scripts/utils/color.sh
+. "${PROJECT_DIR}/scripts/utils/color.sh"
 
 print_header() {
 	echo "${BOLD}${BLUE}───────────────────────${RESET}"
@@ -39,7 +25,7 @@ print_header() {
 print_tasks() {
 	awk '
 		function trim(s) {
-			gsub(/^[ \t]+|[ \t]+$/, "", s)
+			gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
 			return s
 		}
 
@@ -49,16 +35,16 @@ print_tasks() {
 			count = 0
 		}
 
-		/^\s*#\s*@section\s+/ {
+		/^[[:space:]]*#[[:space:]]*@section[[:space:]]+/ {
 			line = $0
-			sub(/^\s*#\s*@section\s+/, "", line)
+			sub(/^[[:space:]]*#[[:space:]]*@section[[:space:]]+/, "", line)
 			section = trim(line)
 			next
 		}
 
-		/^\s*#\s*/ {
+		/^[[:space:]]*#[[:space:]]*/ {
 			line = $0
-			sub(/^\s*#\s?/, "", line)
+			sub(/^[[:space:]]*#[[:space:]]?/, "", line)
 			line = trim(line)
 
 			if (line == "" || line ~ /^@section\s+/) {
@@ -71,9 +57,15 @@ print_tasks() {
 			next
 		}
 
-		/^\s*[A-Za-z_][A-Za-z0-9_-]*\s*:/ {
+		/^[[:space:]]*[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:/ {
 			line = $0
-			sub(/^\s*/, "", line)
+			sub(/^[[:space:]]*/, "", line)
+
+			if (line ~ /^[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:=/) {
+				pending_doc = ""
+				next
+			}
+
 			split(line, parts, ":")
 			name = trim(parts[1])
 
@@ -117,7 +109,7 @@ render_menu() {
 	local output
 	output="$(print_tasks)"
 
-	if grep -q '^NO_TASKS$' <<< "${output}"; then
+	if grep -q '^NO_TASKS$' <<<"${output}"; then
 		echo "${YELLOW}No public tasks found in ${JUSTFILE_PATH}.${RESET}"
 		return
 	fi
@@ -132,7 +124,7 @@ render_menu() {
 		fi
 
 		printf "  ${CYAN}%-18s${RESET} %s\n" "${b}" "${c}"
-	done <<< "${output}"
+	done <<<"${output}"
 }
 
 print_header

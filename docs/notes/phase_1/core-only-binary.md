@@ -3,6 +3,7 @@
 ### Table of Contents
 - [Premise](#premise)
 - [Implementation](#implementation)
+- [Custom Target](#custom-target)
 
 ### Premise
 Before we can do absolutely anything we need to strip Rust down to its basics. Programmers are familiar with the std libs of Rust, C/C++, Go, etc. Unfortunately, the standard library is designed to perform OS specific operations (i.e. the `std::fs` library of Rust needs a filesystem and set of OS-specific operations in order to do its "thing"). Currently we don't even have the semblance of an OS, and even if we did, we'd need to define all of these specific operations in the Rust standard library for our specific OS.
@@ -31,7 +32,7 @@ pub extern "C" fn _start() -> ! {
 }
 ```
 
-Now we can build out binary with `cargo build` and we've successfully made a Rust binary with no standard library. If we attempt to run it, our "kernel" entrypoint will just loop forever until we've defined real functionality. 
+Now we can build out binary with `cargo build` and we've successfully made a Rust binary with no standard library. If we attempt to run it, our "kernel" entrypoint will just loop forever until we've defined real functionality.
 
 ### Custom Target
 
@@ -41,7 +42,7 @@ When we compiled previously we were using our system's default target (basically
 ```json
 {
     // Signal that we are on 64-bit x86 with no vendor and no OS (bare-metal)
-    "llvm-target": "x86_64-unknown-none", 
+    "llvm-target": "x86_64-unknown-none",
     // LLVM string for how data is laid out in memory (taken from x86_64-unknown-none)
     "data-layout": "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
     // CPU Architecture (target arch for cfg and codegen)
@@ -64,7 +65,7 @@ When we compiled previously we were using our system's default target (basically
     // for temporaries without moving the stack pointer. In kernel/bare-metal code,
     // interrupts/exceptions can write to that area and corrupt local variables.
     "disable-redzone": true,
-    // We don't have unwinding support 
+    // We don't have unwinding support
     "panic-strategy": "abort",
     // Emulate floats
     "features": "-mmx,-sse,+soft-float",
@@ -86,5 +87,13 @@ build-std = [
 
 Now you should be able to build the binary properly and this freestanding ELF binary will be the entrypoint our bootloader will use for our operating system.
 
+### Resources
+
+- [Rust Core](https://doc.rust-lang.org/core/)
+- [Rust Targets](https://doc.rust-lang.org/beta/rustc/targets/index.html)
+- [Rust Binaries w/out Std](https://medium.com/@theopinionatedev/inside-rusts-no-main-world-how-binaries-run-without-std-a0d15d9dcb11)
+- [Name mangling](https://en.wikipedia.org/wiki/Name_mangling)
+- [Red Zone](https://en.wikipedia.org/wiki/Red_zone_(computing))
+
 ---
-[[Previous Page]](./index.md) [[Next Page]](booting-simple-kernel.md)
+[[Index]](./index.md) [[Next Page]](booting-simple-kernel.md)

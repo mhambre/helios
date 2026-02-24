@@ -1,10 +1,15 @@
+include .env
+
+# Commands
 CARGO = cargo
-TARGET = x86_64-helios.json
 
-.PHONY: kernel-debug
-kernel-debug:
-	$(CARGO) +nightly build --target $(TARGET)
+# Shared Locations
+ROOT_MAKEFILE := $(abspath $(firstword $(MAKEFILE_LIST)))
+PROJECT_DIR := $(patsubst %/,%,$(dir $(ROOT_MAKEFILE)))
+BUILD_SCRIPTS = $(PROJECT_DIR)/scripts/build
 
-.PHONY: kernel-release
-kernel-release:
-	$(CARGO) +nightly build --release --target $(TARGET)
+# Environment Variable Overrides
+ARCH = $(shell uname -m)
+
+include mk/core.mk
+

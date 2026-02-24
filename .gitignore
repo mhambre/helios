@@ -22,5 +22,13 @@ target
 
 
 # Added by cargo
-
 /target
+
+# User config
+.env
+
+# Build artifacts
+iso/
+build/
+!scripts/build
+linker.ld

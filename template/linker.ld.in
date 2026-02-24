@@ -1,0 +1,33 @@
+ENTRY(_start) /* Entrypoint symbol defined in main.rs */
+
+OUTPUT_FORMAT("__OUTPUT_FORMAT__")
+OUTPUT_ARCH(__OUTPUT_ARCH__)
+
+SECTIONS
+{
+    . = 1M; /* Load address for the kernel (1 MiB) */
+
+    .multiboot ALIGN(4K) : {
+        KEEP(*(.multiboot))
+    }
+
+    .text ALIGN(4K) : {
+        *(.text._start)
+        *(.text*)
+    }
+
+    .rodata ALIGN(4K) : {
+        *(.rodata*)
+    }
+
+    .data ALIGN(4K) : {
+        *(.data*)
+    }
+
+    .bss ALIGN(4K) : {
+        __bss_start = .;
+        *(.bss*)
+        *(COMMON)
+        __bss_end = .;
+    }
+}
