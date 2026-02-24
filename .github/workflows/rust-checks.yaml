@@ -42,6 +42,10 @@ jobs:
         with:
           components: clippy, rust-src
 
+      - name: Set up .env
+        run: |
+          cp env_template .env
+
       - name: Cache cargo + target
         uses: Swatinem/rust-cache@v2
         with:
