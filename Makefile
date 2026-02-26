@@ -18,8 +18,13 @@ include mk/daemon.mk
 include mk/sci.mk
 
 # === Aggregate Targets ===
-.PHONY: all
-all: kr cr dr sr
+.PHONY: all-release ar
+all-release ar: kr cr dr sr
+
+.PHONY: high-level hl
+high-level hl:
+	RUST_TARGET=x86_64-unknown-linux-gnu
+	make cr dr sr
 
 .PHONY: os
 os:

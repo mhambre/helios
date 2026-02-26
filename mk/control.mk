@@ -9,13 +9,13 @@ BIN = $(CRATE)
 
 # == Build Targets ==
 # Build control in debug mode
-.PHONY: ctl-debug kd
-ctl-debug kd:
+.PHONY: ctl-debug cd
+ctl-debug cd:
 	$(CARGO) +nightly build -p $(CRATE) --target $(RUST_TARGET_JSON)
 	@echo "$(CRATE) built successfully in debug mode: $(TARGET_DIR)/debug/$(BIN)"
 
 # Build control in release mode
-.PHONY: ctl-release kr
+.PHONY: ctl-release cr
 ctl-release cr:
 	$(CARGO) +nightly build -p $(CRATE) --release --target $(RUST_TARGET_JSON)
 	@echo "$(CRATE) built successfully in release mode: $(TARGET_DIR)/release/$(BIN)"
