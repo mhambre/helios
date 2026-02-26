@@ -7,4 +7,4 @@
 - [ ] Basic Memory Management
 
 ---
-[[Index]](index.md) [[Next Page]](phase_2.md)
+[[Previous Page]](phase_0.md) [[Index]](index.md) [[Next Page]](phase_2.md)

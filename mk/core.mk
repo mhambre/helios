@@ -49,9 +49,3 @@ qemu-debug-serial qds: debug-iso-serial
 .PHONY: qemu-release-serial qrs
 qemu-release-serial qrs: release-iso-serial
 	$(QEMU_EXECUTABLE) -cdrom $(ISO_BUILD_DIR)/$(PROJECT).iso -m $(QEMU_MEM) -nographic -serial mon:stdio
-
-# === Clean Targets ===
-.PHONY: clean
-clean:
-	$(CARGO) clean
-	rm -rf build/*
