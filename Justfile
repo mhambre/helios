@@ -1,10 +1,7 @@
 # Common Developer Tasks
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
-PROJECT := "helios"
-ARCH := `uname -m`
 PROJECT_DIR := justfile_directory()
-RUST_TARGET_JSON := PROJECT_DIR + "/template/" + ARCH + "-" + PROJECT + ".json"
 
 _default:
   {{PROJECT_DIR}}/scripts/dev/just-menu.sh
@@ -60,12 +57,60 @@ rust-check:
 # Runs clippy and fails on warnings
 rust-clippy:
   @just _stage rust-clippy "cargo +nightly clippy"
-  cargo +nightly --config .cargo/config.toml clippy --target {{RUST_TARGET_JSON}} --all-features -- -D warnings
+  @bash -eu -o pipefail -c '\
+    set -a; source ./.env; set +a; \
+    arch="${ARCH:-$(uname -m)}"; \
+    low_target="${LOW_LEVEL_TARGET:-${PROJECT_DIR}/template/${arch}-${PROJECT}.json}"; \
+    high_target="${HIGH_LEVEL_TARGET:-${arch}-unknown-linux-gnu}"; \
+    map_pkg() { \
+      case "$1" in \
+        core) echo "helios-core" ;; \
+        control) echo "helictl" ;; \
+        daemon) echo "helid" ;; \
+        sci) echo "helios-sci" ;; \
+        *) return 1 ;; \
+      esac; \
+    }; \
+    for c in ${LOW_LEVEL_CRATES:-core}; do \
+      p="$(map_pkg "$c")" || continue; \
+      echo "[clippy] low  crate=$c pkg=$p target=$low_target"; \
+      cargo +nightly --config .cargo/config.toml clippy -Zjson-target-spec -p "$p" --target "$low_target" ${LOW_LEVEL_CARGO_FLAGS:-} --all-features -- -D warnings; \
+    done; \
+    for c in ${HIGH_LEVEL_CRATES:-control daemon sci http}; do \
+      p="$(map_pkg "$c")" || continue; \
+      echo "[clippy] high crate=$c pkg=$p target=$high_target"; \
+      cargo +nightly --config .cargo/config.toml clippy -p "$p" --target "$high_target" ${HIGH_LEVEL_CARGO_FLAGS:-} --all-features -- -D warnings; \
+    done \
+  '
 
 # Runs cargo-udeps with nightly
 rust-udeps:
   @just _stage rust-udeps "cargo +nightly udeps"
-  RUSTFLAGS="-Zunstable-options" cargo +nightly --config .cargo/config.toml udeps --workspace --target {{RUST_TARGET_JSON}}
+  @bash -eu -o pipefail -c '\
+    set -a; source ./.env; set +a; \
+    arch="${ARCH:-$(uname -m)}"; \
+    low_target="${LOW_LEVEL_TARGET:-${PROJECT_DIR}/template/${arch}-${PROJECT}.json}"; \
+    high_target="${HIGH_LEVEL_TARGET:-${arch}-unknown-linux-gnu}"; \
+    map_pkg() { \
+      case "$1" in \
+        core) echo "helios-core" ;; \
+        control) echo "helictl" ;; \
+        daemon) echo "helid" ;; \
+        sci) echo "helios-sci" ;; \
+        http) echo "helios-http" ;; \
+        *) return 1 ;; \
+      esac; \
+    }; \
+    for c in ${LOW_LEVEL_CRATES:-core}; do \
+      p="$(map_pkg "$c")" || continue; \
+      echo "[udeps] skip low crate=$c pkg=$p (custom target not reliably supported by cargo-udeps)"; \
+    done; \
+    for c in ${HIGH_LEVEL_CRATES:-control daemon sci http}; do \
+      p="$(map_pkg "$c")" || continue; \
+      echo "[udeps] high crate=$c pkg=$p target=$high_target"; \
+      RUSTFLAGS="-Zunstable-options" cargo +nightly --config .cargo/config.toml udeps -p "$p" --target "$high_target" ${HIGH_LEVEL_CARGO_FLAGS:-}; \
+    done \
+  '
 
 # Formats all Rust files
 rust-fmt:
@@ -120,7 +165,9 @@ build crate profile="release":
     daemon:release) make dr ;; \
     sci:debug) make sd ;; \
     sci:release) make sr ;; \
-    *) echo "Usage: just build <core|control|daemon|sci> [debug|release]"; exit 1 ;; \
+    http:debug) make hd ;; \
+    http:release) make hr ;; \
+    *) echo "Usage: just build <core|control|daemon|sci|http> [debug|release]"; exit 1 ;; \
   esac
 
 # Run a component under GDB
@@ -131,7 +178,8 @@ gdb crate:
     control) make cgdb ;; \
     daemon) make dgdb ;; \
     sci) make sgdb ;; \
-    *) echo "Usage: just gdb <core|control|daemon|sci>"; exit 1 ;; \
+    http) make hgdb ;; \
+    *) echo "Usage: just gdb <core|control|daemon|sci|http>"; exit 1 ;; \
   esac
 
 # Start kernel QEMU in paused mode with GDB stub enabled

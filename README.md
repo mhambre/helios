@@ -20,7 +20,7 @@ This project is intended to be a hobby project where I learn how to make an oper
 - [Helios System Call Interface (helios-sci)](./crates/helios-sci/README.md): Kernel operation abstraction layer for Helios.
 - [Helios Daemon (helid)](./crates/helid/README.md): Filesystem storage control daemon.
 - [Helios Control (helictl)](./crates/helictl/README.md): Remote CLI control application for interacting with a `helid` service.
-
+- [Helios HTTP (helios-http)](./crates/helios-http/README.md): Simple HTTP server built on top of the Helios TCP stack.
 
 ### Table of Contents
 - [Documentation](docs/index.md)

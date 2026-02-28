@@ -23,7 +23,7 @@ sudo apt update && sudo apt install -y \
 	fzf \
 	ripgrep \
 	gdb \
-	rust-gdb && \
+	rust-gdb &&
 	sudo rm -rf /var/lib/apt/lists/*
 
 # Install non-critical cargo devex tools
