@@ -53,6 +53,7 @@ include mk/core.mk
 include mk/control.mk
 include mk/daemon.mk
 include mk/sci.mk
+include mk/http.mk
 
 # === Aggregate Targets ===
 # Build all components in release mode

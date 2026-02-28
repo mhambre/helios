@@ -44,7 +44,7 @@ jobs:
 
       - name: Set up .env
         run: |
-          cp env_template .env
+          cp .env.example .env
 
       - name: Cache cargo + target
         uses: Swatinem/rust-cache@v2
@@ -93,7 +93,7 @@ jobs:
 
       - name: Set up .env
         run: |
-          cp env_template .env
+          cp .env.example .env
 
       - name: Run cargo udeps
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
