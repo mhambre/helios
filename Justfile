@@ -100,3 +100,41 @@ shell-fmt-check:
     \( -path './.git' -o -path './target' -o -path './build' \) -prune -o \
     -type f -name '*.sh' -print0 \
     | xargs -0 -r shfmt -d >/dev/null
+
+# @section Build Levels
+
+# Show current low/high crate mapping and resolved targets/flags
+level-status:
+  @just _stage level-status "make level-status"
+  make level-status
+
+# Build a component using current level mapping
+build crate profile="release":
+  @just _stage build "crate={{crate}} profile={{profile}}"
+  @case "{{crate}}:{{profile}}" in \
+    core:debug) make kd ;; \
+    core:release) make kr ;; \
+    control:debug) make cd ;; \
+    control:release) make cr ;; \
+    daemon:debug) make dd ;; \
+    daemon:release) make dr ;; \
+    sci:debug) make sd ;; \
+    sci:release) make sr ;; \
+    *) echo "Usage: just build <core|control|daemon|sci> [debug|release]"; exit 1 ;; \
+  esac
+
+# Run a component under GDB
+gdb crate:
+  @just _stage gdb "crate={{crate}}"
+  @case "{{crate}}" in \
+    core) make kgdb ;; \
+    control) make cgdb ;; \
+    daemon) make dgdb ;; \
+    sci) make sgdb ;; \
+    *) echo "Usage: just gdb <core|control|daemon|sci>"; exit 1 ;; \
+  esac
+
+# Start kernel QEMU in paused mode with GDB stub enabled
+kernel-qemu-gdb:
+  @just _stage kernel-qemu-gdb "make kqgdb"
+  make kqgdb

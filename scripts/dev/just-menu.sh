@@ -57,17 +57,15 @@ print_tasks() {
 			next
 		}
 
-		/^[[:space:]]*[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:/ {
+		/^[A-Za-z_][A-Za-z0-9_-]*([[:space:]][^:]*)*:[[:space:]]*$/ {
 			line = $0
-			sub(/^[[:space:]]*/, "", line)
-
 			if (line ~ /^[A-Za-z_][A-Za-z0-9_-]*[[:space:]]*:=/) {
 				pending_doc = ""
 				next
 			}
 
-			split(line, parts, ":")
-			name = trim(parts[1])
+			match(line, /^[A-Za-z_][A-Za-z0-9_-]*/)
+			name = substr(line, RSTART, RLENGTH)
 
 			if (name == "default" || name ~ /^_/) {
 				pending_doc = ""

@@ -22,7 +22,8 @@ sudo apt update && sudo apt install -y \
 	shellcheck \
 	fzf \
 	ripgrep \
-	gdb &&
+	gdb \
+	rust-gdb && \
 	sudo rm -rf /var/lib/apt/lists/*
 
 # Install non-critical cargo devex tools
@@ -38,5 +39,8 @@ echo "${BOLD}${GREEN}Installing tools with custom installers...${RESET}"
 curl -sS https://webi.sh/shfmt | sh
 # shellcheck source=/dev/null
 source ~/.config/envman/PATH.env
+
+# My name is gef
+bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
 echo "${BOLD}${BLUE}Post-create tasks complete.${RESET}"
