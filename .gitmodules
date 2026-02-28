@@ -1,0 +1,15 @@
+[submodule "crates/helictl"]
+	path = crates/helictl
+	url = gh:mhambre/helictl.git
+[submodule "crates/helid"]
+	path = crates/helid
+	url = gh:mhambre/helid.git
+[submodule "crates/helios-sci"]
+	path = crates/helios-sci
+	url = gh:mhambre/helios-sci.git
+[submodule "crates/helios-core"]
+	path = crates/helios-core
+	url = gh:mhambre/helios-core.git
+[submodule "crates/helios-http"]
+	path = crates/helios-http
+	url = gh:mhambre/helios-http.git
