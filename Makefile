@@ -86,11 +86,12 @@ level-status ls:
 	@printf "%-8s %-5s %-30s %s\n" "control" "$(call component_level,control)" "$(call target_for_component,control)" "$(call cargo_flags_for_component,control)"
 	@printf "%-8s %-5s %-30s %s\n" "daemon" "$(call component_level,daemon)" "$(call target_for_component,daemon)" "$(call cargo_flags_for_component,daemon)"
 	@printf "%-8s %-5s %-30s %s\n" "sci" "$(call component_level,sci)" "$(call target_for_component,sci)" "$(call cargo_flags_for_component,sci)"
+	@printf "%-8s %-5s %-30s %s\n" "http" "$(call component_level,http)" "$(call target_for_component,http)" "$(call cargo_flags_for_component,http)"
 
 # Build the entire OS (all components) in release mode
 .PHONY: os
 os:
-	@echo "Composite OS build target. Use 'make kr' for kernel, 'make cr' for control, 'make dr' for daemon, and 'make sr' for sci."
+	@echo "Composite OS build target. Use 'make kr' for kernel, 'make cr' for control, 'make dr' for daemon, 'make http' for the http server, and 'make sr' for sci."
 	@echo "Not implemented: 'make os' is a placeholder for building all components together. Use individual targets for now."
 	exit 1
 
