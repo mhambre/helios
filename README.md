@@ -41,11 +41,11 @@ This project acts as a mono-repo combining the functionalities of all of it's su
 
 <h2 align="center">Components</h2>
 
-- [Helios Kernel (helios-core)](./crates/helios-core/README.md): The kernel of the Helios operating system.
-- [Helios System Call Interface (helios-sci)](./crates/helios-sci/README.md): Kernel operation abstraction layer for the Helios ecosystem.
-- [Helios Daemon (helid)](./crates/helid/README.md): Filesystem storage control daemon.
-- [Helios Control (helictl)](./crates/helictl/README.md): Remote CLI control application for interacting with a `helid` service.
-- [Helios HTTP (helios-http)](./crates/helios-http/README.md): Simple HTTP server built on top of the Helios TCP stack.
+- [Helios Kernel (helios-core)](https://github.com/mhambre/helios-core): The kernel of the Helios operating system.
+- [Helios System Call Interface (helios-sci)](https://github.com/mhambre/helios-sci): Kernel operation abstraction layer for the Helios ecosystem.
+- [Helios Daemon (helid)](https://github.com/mhambre/helid): Filesystem storage control daemon.
+- [Helios Control (helictl)](https://github.com/mhambre/helictl): Remote CLI control application for interacting with a `helid` service.
+- [Helios HTTP (helios-http)](https://github.com/mhambre/helios-http): Simple HTTP server built on top of the Helios TCP stack.
 
 <h2 align="center">Documentation</h2>
 
