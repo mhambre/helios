@@ -7,6 +7,7 @@ The fundamental design principles for this phase will include separation of conc
 ### Key Deliverables:
 - Core Daemon Implementation:
     - Build with core datastructures from libraries (e.g. https://docs.rs/lsm-tree/latest/lsm_tree/)
+    - Hand rolled HTTP server for exposing APIs
     - Basic resource monitoring and management capabilities (e.g. CPU, memory, disk usage)
     - Basic process management capabilities endpoints (e.g. start/stop processes, monitor resource usage)
     - Basic logging and error handling mechanisms (e.g. using the `log` crate for structured logging)
@@ -23,7 +24,7 @@ The fundamental design principles for this phase will include separation of conc
 - Mock System Call Interface
     - low-level/std-lib operations cfg gated behind our custom target
     - tokio-fs for async file operations to mock file system interactions
-    - mock implementations for process management, memory management, and other system/sysinfo interactions
+    - mock implementations for process management, networking (sockets), memory management, and other system/sysinfo interactions
 
 ---
 [[Index]](index.md) [[Next Page]](phase_1.md)
