@@ -1,3 +1,9 @@
 [workspace]
 resolver = "2"
-members = ["crates/helios-core"]
+members = [
+  "crates/helictl",
+  "crates/helid",
+  "crates/helios-http",
+  "crates/helios-core",
+  "crates/helios-sci",
+]

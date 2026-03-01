@@ -38,42 +38,47 @@ Now we can build out binary with `cargo build` and we've successfully made a Rus
 
 When we compiled previously we were using our system's default target (basically a recipe for how Rust compilation is to be done) on different systems. Since we are making the system we have to avoid making some of these assumptions that match that of our base-OS and configure our own that will allow this binary to truly run on bare-metal. Below is the recipe we will be using for now. It is subject to change as the OS grows and we implement more.
 
-- `x86_64-helios.json`:
+- `i686-helios.json`:
 ```json
 {
-    // Signal that we are on 64-bit x86 with no vendor and no OS (bare-metal)
-    "llvm-target": "x86_64-unknown-none",
-    // LLVM string for how data is laid out in memory (taken from x86_64-unknown-none)
-    "data-layout": "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
+    // Signal that we are on 32-bit x86 with no vendor and no OS (bare-metal)
+    "llvm-target": "i686-unknown-none",
+    // LLVM string for how data is laid out in memory (taken from i686-unknown-none)
+    "data-layout": "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
     // CPU Architecture (target arch for cfg and codegen)
-    "arch": "x86_64",
+    "arch": "x86",
     // Byte order
     "target-endian": "little",
     // Size of our pointers
-    "target-pointer-width": 64,
+    "target-pointer-width": 32,
     // Size of C-ints on our system for C ABI interoperability
     "target-c-int-width": 32,
     // We are the OS!
     "os": "none",
     // The kernel is executable (ELF executable/kernel image)
     "executables": true,
+    // Emit an ELF executable binary
+    "exe-suffix": ".elf",
     // Use GNU ld-like mode for linker
     "linker-flavor": "ld.lld",
     // Use Rust's shipped linker for cross-platform support
     "linker": "rust-lld",
-    // Disable the x86_64 System V "red zone": the compiler may use 128 bytes below RSP
-    // for temporaries without moving the stack pointer. In kernel/bare-metal code,
-    // interrupts/exceptions can write to that area and corrupt local variables.
-    "disable-redzone": true,
     // We don't have unwinding support
     "panic-strategy": "abort",
     // Emulate floats
-    "features": "-mmx,-sse,+soft-float",
-    "rustc-abi": "x86-softfloat"
+    "features": "-mmx,-sse"
 }
 ```
 
-To build now we must point cargo to our target. Unfortunately, Rust stable doesn't support this, however, by using a nightly toolchain we are able to use custom JSON targets. The command to achieve this is `cargo +nightly build --target x86_64-helios.json` (add nightly toolchain with `rustup toolchain install nightly`) and we add this to our Makefile as commands `kernel-debug` and `kernel-release` for simplicity. Before we can compile though we must define the subset of the standard library that we will need for future operations (the aforementioned inclusion of things like `Result`, core data types, etc.). This can be achieved by adding this to our `.cargo/config.toml`:
+To build now we must point cargo to our custom target. Rust stable doesn't support this yet for our flow, so we use nightly and pass the unstable flags directly. The command to achieve this is:
+
+`cargo +nightly build -p helios-core -Zjson-target-spec -Z build-std=core --target template/i686-helios.json`
+
+(add nightly toolchain with `rustup toolchain install nightly`).
+
+We also wire this into the project build scripts (`make kd`, `make kr`, or `just build core <debug|release>`) so we don't have to type the full cargo command every time.
+
+Historically this was configured in `.cargo/config.toml` with:
 
 ```toml
 [unstable]

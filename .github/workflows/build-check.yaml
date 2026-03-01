@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build:
+    name: Compile Workspace Crates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Rust (nightly)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src
+          targets: i686-unknown-linux-gnu
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Install system build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y grub-common gcc-multilib libc6-dev-i386
+
+      - name: Ensure .env exists
+        run: |
+          if [ ! -f .env ]; then
+            cp .env.example .env
+          fi
+
+      - name: Cache cargo + target
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: build-check
+
+      - name: Run build check
+        run: |
+          just build core release && \
+          just build daemon release && \
+          just build control release && \
+          just build sci release && \
+          just build http release

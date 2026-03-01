@@ -84,8 +84,8 @@ Now we have a Multiboot2-compliant header in our binary, but it is not really a 
 /* linker.ld */
 ENTRY(_start)                             /* Entrypoint symbol defined in main.rs */
 
-OUTPUT_FORMAT("elf64-x86-64")             /* Output ELF file format */
-OUTPUT_ARCH(i386:x86-64)                  /* Target architecture */
+OUTPUT_FORMAT("elf32-i686")             /* Output ELF file format */
+OUTPUT_ARCH(i386)                  /* Target architecture */
 
 SECTIONS
 {

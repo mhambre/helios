@@ -1,4 +1,4 @@
-name: Rust Quality Checks
+name: Quality (Rust)
 
 on:
   pull_request:
@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install just
         uses: taiki-e/install-action@just
@@ -33,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install just
         uses: taiki-e/install-action@just
@@ -41,10 +45,11 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy, rust-src
+          targets: i686-unknown-linux-gnu
 
       - name: Set up .env
         run: |
-          cp env_template .env
+          cp .env.example .env
 
       - name: Cache cargo + target
         uses: Swatinem/rust-cache@v2
@@ -59,6 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install just
         uses: taiki-e/install-action@just
@@ -80,6 +87,7 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: rust-src
+          targets: i686-unknown-linux-gnu
 
       - name: Cache cargo + target
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
@@ -93,7 +101,7 @@ jobs:
 
       - name: Set up .env
         run: |
-          cp env_template .env
+          cp .env.example .env
 
       - name: Run cargo udeps
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
