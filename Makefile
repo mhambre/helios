@@ -11,7 +11,7 @@ PROJECT_DIR := $(patsubst %/,%,$(dir $(ROOT_MAKEFILE)))
 BUILD_SCRIPTS = $(PROJECT_DIR)/scripts/build
 
 # Environment Variable Overrides
-ARCH := $(shell uname -m)
+ARCH ?= i686
 
 # Compilation level defaults (can be overridden in .env or CLI)
 LOW_LEVEL_TARGET ?= $(PROJECT_DIR)/template/$(ARCH)-$(PROJECT).json

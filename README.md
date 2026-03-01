@@ -30,7 +30,7 @@ Central to this approach is the Helios System Call Interface ([helios-sci](./cra
 This project acts as a mono-repo combining the functionalities of all of it's subprojects. This means that `helios` stores all of the required scripts for developing, building, and using the submodules together. Certain submodules (i.e. helictl, helios-http, helid) are capabale of being used on their own and will have associated documentation regarding how to use them on their own as either a binary, or a library.
 
 1. Clone the repository and submodules: `git clone --recurse-submodules git@github.com:mhambrec/helios.git`
-2. Copy `.env.example` to `.env` and modify as necessary. The defaults will work in the `x86_64` devcontainer out of the box.
+2. Copy `.env.example` to `.env` and modify as necessary. The defaults target a 32-bit `i686` kernel build out of the box.
 3. Run `just` to view the more standard task running commands (i.e. `just build <crate>`, `just gdb <crate>`).
 4. For more finegrained build commands and detailed coding standards and information review the [advanced development documentation](./docs/development/index.md).
 

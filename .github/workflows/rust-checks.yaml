@@ -41,6 +41,7 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy, rust-src
+          targets: i686-unknown-linux-gnu
 
       - name: Set up .env
         run: |
@@ -80,6 +81,7 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
         with:
           components: rust-src
+          targets: i686-unknown-linux-gnu
 
       - name: Cache cargo + target
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
