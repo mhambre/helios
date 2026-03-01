@@ -17,15 +17,15 @@ name = "helid"
 version = "0.1.0"
 
 [[package]]
-name = "helio-http"
-version = "0.1.0"
-
-[[package]]
 name = "helios-core"
 version = "0.1.0"
 dependencies = [
  "dotenvy",
 ]
+
+[[package]]
+name = "helios-http"
+version = "0.1.0"
 
 [[package]]
 name = "helios-sci"

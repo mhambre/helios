@@ -1,6 +1,7 @@
 # Development
 
 ### Table of Contents
+- [Coding Standards](./standards.md)
 - [Roadmap](./roadmap/index.md)
 
 ---
