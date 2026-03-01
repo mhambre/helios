@@ -23,7 +23,7 @@
 
 <h2 align="center">Premise</h2>
 
-Helios is a hobby project aimed at building an Operating System and its core components from scratch, documented step-by-step in my [blog](https://matthewthe.dev/helios). The goal is to take a structured, phased approach — starting with a fully functional Object Storage daemon running on Linux, and progressively migrating it to run on a custom kernel.
+Helios is a hobby project aimed at building an Operating System and its core components from scratch, documented step-by-step in my [blog](https://matthewthe.dev/helios). The goal is to take a structured, phased approach; starting with a fully functional Object Storage daemon running on Linux, and progressively migrating it to run on a custom kernel.
 
 Central to this approach is the Helios System Call Interface ([helios-sci](./crates/helios-sci/README.md)), an abstraction layer that exposes networking, storage, and other OS primitives in a way that's compatible with both Linux and helios-core. This means the daemon itself remains largely untouched as the underlying platform evolvesm, ideally just a feature flag away from switching targets. The final architecture is outlined below.
 
