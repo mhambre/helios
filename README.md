@@ -4,10 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/matthambrecht/helios/actions/workflows/rust-checks.yaml">
-    <img src="https://github.com/matthambrecht/helios/actions/workflows/rust-checks.yaml/badge.svg?branch=main" alt="Quality Checks (Rust)" />
+    <img src="https://github.com/matthambrecht/helios/actions/workflows/rust-checks.yaml/badge.svg?branch=main" alt="Quality (Rust)" />
   </a>
   <a href="https://github.com/matthambrecht/helios/actions/workflows/shell-quality-checks.yaml">
-    <img src="https://github.com/matthambrecht/helios/actions/workflows/shell-quality-checks.yaml/badge.svg?branch=main" alt="Quality Checks (Bash)" />
+    <img src="https://github.com/matthambrecht/helios/actions/workflows/shell-quality-checks.yaml/badge.svg?branch=main" alt="Quality (Bash)" />
   </a>
   <a href="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml">
     <img src="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml/badge.svg?branch=main" alt="Build Status" />
