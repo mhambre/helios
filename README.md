@@ -9,8 +9,8 @@
   <a href="https://github.com/matthambrecht/helios/actions/workflows/shell-quality-checks.yaml">
     <img src="https://github.com/matthambrecht/helios/actions/workflows/shell-quality-checks.yaml/badge.svg?branch=main" alt="Quality (Bash)" />
   </a>
-  <a href="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml">
-    <img src="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml/badge.svg?branch=main" alt="Build Status" />
+  <a href="https://github.com/matthambrecht/helios/actions/workflows/build-check.yaml">
+    <img src="https://github.com/matthambrecht/helios/actions/workflows/build-check.yaml/badge.svg?branch=main" alt="Build" />
   </a>
   <a href="https://github.com/matthambrecht/helios/actions/workflows/codeql.yml">
     <img src="https://github.com/matthambrecht/helios/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL" />
