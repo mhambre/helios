@@ -12,6 +12,9 @@
   <a href="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml">
     <img src="https://github.com/matthambrecht/helios/actions/workflows/build-checks.yaml/badge.svg?branch=main" alt="Build Status" />
   </a>
+  <a href="https://github.com/matthambrecht/helios/actions/workflows/codeql.yml">
+    <img src="https://github.com/matthambrecht/helios/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL" />
+  </a>
 </p>
 
 <p align="center">

@@ -1,4 +1,4 @@
-name: Shell Quality Checks
+name: Quality (Bash)
 
 on:
   pull_request:
