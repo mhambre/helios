@@ -1,0 +1,45 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      crates:
+        description: "Space-separated crate aliases or package names (optional)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  nextest:
+    name: Run nextest (cargo test wrapper)
+    runs-on: ubuntu-latestt
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@nextest
+
+      - name: Install Rust (nightly)
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Cache cargo + target
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: nextest
+
+      - name: Run nextest
+        run: |
+          just rust-test ${{ github.event.inputs.crates }}
