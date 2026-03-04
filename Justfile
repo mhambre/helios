@@ -112,6 +112,32 @@ rust-udeps:
     done \
   '
 
+# Runs cargo-nextest for selected crates, or the entire workspace when none are provided
+rust-test +crates="":
+  @just _stage rust-nextest "cargo nextest run"
+  @bash -eu -o pipefail -c '\
+    map_pkg() { \
+      case "$1" in \
+        core) echo "helios-core" ;; \
+        control) echo "helictl" ;; \
+        daemon) echo "helid" ;; \
+        sci) echo "helios-sci" ;; \
+        http) echo "helios-http" ;; \
+        *) echo "$1" ;; \
+      esac; \
+    }; \
+    if [ -z "{{crates}}" ]; then \
+      echo "[nextest] workspace"; \
+      cargo nextest run --workspace; \
+      exit 0; \
+    fi; \
+    for c in {{crates}}; do \
+      p="$(map_pkg "$c")"; \
+      echo "[nextest] crate=$c pkg=$p"; \
+      cargo nextest run -p "$p"; \
+    done \
+  '
+
 # Formats all Rust files
 rust-fmt:
   @just _stage rust-fmt "cargo fmt"
