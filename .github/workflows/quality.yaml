@@ -1,4 +1,4 @@
-name: Quality (Rust)
+name: Quality
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  fmt:
-    name: Format
+  rust:
+    name: Rust Quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,26 +25,7 @@ jobs:
       - name: Install Rust (nightly)
         uses: dtolnay/rust-toolchain@nightly
         with:
-          components: rustfmt
-
-      - name: Check formatting
-        run: just rust-fmt-check
-
-  clippy:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Install just
-        uses: taiki-e/install-action@just
-
-      - name: Install Rust (nightly)
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: clippy, rust-src
+          components: rustfmt, clippy, rust-src
           targets: i686-unknown-linux-gnu
 
       - name: Set up .env
@@ -54,21 +35,13 @@ jobs:
       - name: Cache cargo + target
         uses: Swatinem/rust-cache@v2
         with:
-          key: clippy
+          key: rust-quality
+
+      - name: Check formatting
+        run: just rust-fmt-check
 
       - name: Run clippy (deny warnings)
         run: just rust-clippy
-
-  udeps:
-    name: Unused Dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Install just
-        uses: taiki-e/install-action@just
 
       - id: filter
         uses: dorny/paths-filter@v3
@@ -106,3 +79,25 @@ jobs:
       - name: Run cargo udeps
         if: "${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.cargo_lock == 'true' }}"
         run: just rust-udeps
+
+  shell:
+    name: Shell Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Install shell tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck shfmt
+
+      - name: Run shellcheck
+        run: just shell-check
+
+      - name: Check shell formatting
+        run: just shell-fmt-check
