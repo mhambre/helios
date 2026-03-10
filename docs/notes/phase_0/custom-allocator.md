@@ -165,10 +165,10 @@ pub(crate) unsafe fn mmap(
 
 The key `mmap` parameters for our use case:
 
-- `addr = 0` — let the kernel choose the mapping address
-- `prot = PROT_READ | PROT_WRITE` — readable and writable
-- `flags = MAP_PRIVATE | MAP_ANONYMOUS` — not backed by a file; not shared with other processes
-- `fd = -1`, `offset = 0` — ignored for anonymous mappings
+- `addr = 0`: let the kernel choose the mapping address
+- `prot = PROT_READ | PROT_WRITE`: readable and writable
+- `flags = MAP_PRIVATE | MAP_ANONYMOUS`: not backed by a file; not shared with other processes
+- `fd = -1`, `offset = 0`: ignored for anonymous mappings
 
 ---
 
@@ -193,7 +193,7 @@ pub unsafe trait GlobalAlloc {
 pub struct FLAllocator {
     /// Head of the free list (stored as a raw address for atomic access).
     head: AtomicUsize,
-    /// Initialization state — ensures setup runs exactly once.
+    /// Initialization state: ensures setup runs exactly once.
     state: AtomicAllocState,
 }
 ```
@@ -429,7 +429,7 @@ unsafe fn alloc_from_list(&self, layout: Layout) -> *mut u8 {
             None    => return null_mut(),
         };
 
-        // Block too small — try the next one.
+        // Block too small, try the next one.
         if needed > block_size {
             prev = curr;
             curr = next;
