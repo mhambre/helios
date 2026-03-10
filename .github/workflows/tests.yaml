@@ -19,7 +19,7 @@ permissions:
 jobs:
   nextest:
     name: Run nextest (cargo test wrapper)
-    runs-on: ubuntu-latestt
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4

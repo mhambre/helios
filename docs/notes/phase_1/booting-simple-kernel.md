@@ -1,6 +1,6 @@
 # Booting a Simple Kernel
 
-Now that we've found a way to [produce a binary without a standard library in Rust](./core-only-binary.md), we are able to use that binary as our kernel. The next logical step is to find a way to run this code without an operating system underneath it. This is where bootloaders come in. The goal of a bootloader is to find and execute the kernel of one or more operating systems on a disk. They are pretty nifty, and from my research it is not hard to make a very simple one for very specific hardware like the [i386](https://en.wikipedia.org/wiki/I386). However, things can start to get complicated when you want cross-compatibility and the ability to support multiple operating systems on one disk.
+Now that we've found a way to [produce a binary without a standard library in Rust](./core-only-binary.md), we are able to use that binary as our kernel. The next logical step is to find a way to run this code without an operating system underneath it. This is where bootloaders come in. The goal of a bootloader is to find and execute the kernel of one or more operating systems on a disk. They are pretty nifty, and from my research it is not hard to make a very simple one for very specific hardware like the [x86-64](https://en.wikipedia.org/wiki/X86-64). However, things can start to get complicated when you want cross-compatibility and the ability to support multiple operating systems on one disk.
 
 This is why I chose to make my operating system bootable with [GRUB](https://en.wikipedia.org/wiki/GNU_GRUB), the standard bootloader used by most Linux distributions. The first step was figuring out how to make a usable [ISO](https://en.wikipedia.org/wiki/Optical_disc_image). Fortunately, GRUB provides a utility called `grub-mkrescue` for crafting a rescue ISO in the event something (Windows is a common culprit) overwrites your bootloader.
 
@@ -44,7 +44,7 @@ Next, we need to add a Multiboot2 header to our compiled binary. The header is a
 ```rust
 /* main.rs */
 const MULTIBOOT2_MAGIC: u32 = 0xE85250D5;        // Multiboot2 magic number
-const MULTIBOOT2_ARCHITECTURE: u32 = 0;          // i386 architecture
+const MULTIBOOT2_ARCHITECTURE: u32 = 0;          // x86_64 target architecture
 const MULTIBOOT2_END_TAG_SIZE: u32 = 1 << 3;     // Size of the end tag (8 bytes)
 
 #[repr(C)]
@@ -84,8 +84,8 @@ Now we have a Multiboot2-compliant header in our binary, but it is not really a 
 /* linker.ld */
 ENTRY(_start)                             /* Entrypoint symbol defined in main.rs */
 
-OUTPUT_FORMAT("elf32-i686")             /* Output ELF file format */
-OUTPUT_ARCH(i386)                  /* Target architecture */
+OUTPUT_FORMAT("elf64-x86-64")             /* Output ELF file format */
+OUTPUT_ARCH(i386:x86-64)                  /* Target architecture */
 
 SECTIONS
 {
