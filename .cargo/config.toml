@@ -2,3 +2,6 @@
 f = "+nightly fmt -- --check"
 c = "clippy --all-targets --all-features -- -D warnings"
 u = "+nightly udeps --workspace --all-targets"
+
+[build]
+target = "x86_64-unknown-linux-gnu"

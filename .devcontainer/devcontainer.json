@@ -32,6 +32,7 @@
           "--all-targets",
           "--all-features"
         ],
+        "rust-analyzer.cargo.target": "x86_64-unknown-linux-gnu",
         "[shellscript]": {
           "editor.defaultFormatter": "foxundermoon.shell-format",
           "editor.formatOnSave": true

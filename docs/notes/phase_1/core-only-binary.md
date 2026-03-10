@@ -38,12 +38,12 @@ Now we can build out binary with `cargo build` and we've successfully made a Rus
 
 When we compiled previously we were using our system's default target (basically a recipe for how Rust compilation is to be done) on different systems. Since we are making the system we have to avoid making some of these assumptions that match that of our base-OS and configure our own that will allow this binary to truly run on bare-metal. Below is the recipe we will be using for now. It is subject to change as the OS grows and we implement more.
 
-- `i686-helios.json`:
+- `x86_64-helios.json`:
 ```json
 {
-    // Signal that we are on 32-bit x86 with no vendor and no OS (bare-metal)
-    "llvm-target": "i686-unknown-none",
-    // LLVM string for how data is laid out in memory (taken from i686-unknown-none)
+    // Signal that we are on 64-bit x86_64 with no vendor and no OS (bare-metal)
+    "llvm-target": "x86_64-unknown-none",
+    // LLVM string for how data is laid out in memory (taken from x86_64-unknown-none)
     "data-layout": "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
     // CPU Architecture (target arch for cfg and codegen)
     "arch": "x86",
@@ -66,13 +66,14 @@ When we compiled previously we were using our system's default target (basically
     // We don't have unwinding support
     "panic-strategy": "abort",
     // Emulate floats
-    "features": "-mmx,-sse"
+    "features": "-mmx,-sse,+soft-float",
+    "rustc-abi": "x86-softfloat"
 }
 ```
 
 To build now we must point cargo to our custom target. Rust stable doesn't support this yet for our flow, so we use nightly and pass the unstable flags directly. The command to achieve this is:
 
-`cargo +nightly build -p helios-core -Zjson-target-spec -Z build-std=core --target template/i686-helios.json`
+`cargo +nightly build -p helios-core -Zjson-target-spec -Z build-std=core --target template/x86_64-helios.json`
 
 (add nightly toolchain with `rustup toolchain install nightly`).
 
