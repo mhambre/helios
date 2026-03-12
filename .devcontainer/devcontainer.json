@@ -3,12 +3,24 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "privileged": true,
   "runArgs": [
     "--device=/dev/kvm",
     "--cap-add=NET_ADMIN",
     "--device=/dev/loop-control"
   ],
+  "mounts": [
+    "source=helios-cargo-registry,target=/home/vscode/.cargo/registry,type=volume",
+    "source=helios-cargo-git,target=/home/vscode/.cargo/git,type=volume"
+  ],
+  "forwardPorts": [
+    1234
+  ],
+  "portsAttributes": {
+    "1234": {
+      "label": "QEMU GDB",
+      "onAutoForward": "notify"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -27,12 +39,12 @@
       ],
       "settings": {
         "editor.formatOnSave": true,
+        "rust-analyzer.checkOnSave": true,
         "rust-analyzer.check.command": "clippy",
         "rust-analyzer.check.extraArgs": [
           "--all-targets",
           "--all-features"
         ],
-        "rust-analyzer.cargo.target": "x86_64-unknown-linux-gnu",
         "[shellscript]": {
           "editor.defaultFormatter": "foxundermoon.shell-format",
           "editor.formatOnSave": true
