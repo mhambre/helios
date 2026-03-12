@@ -10,7 +10,11 @@
   ],
   "mounts": [
     "source=helios-cargo-registry,target=/home/vscode/.cargo/registry,type=volume",
-    "source=helios-cargo-git,target=/home/vscode/.cargo/git,type=volume"
+    "source=helios-cargo-git,target=/home/vscode/.cargo/git,type=volume",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh/config,target=/home/vscode/.ssh/config,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.ssh/known_hosts,target=/home/vscode/.ssh/known_hosts,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.ssh/keys,target=/home/vscode/.ssh/keys,type=bind,consistency=cached,readonly"
   ],
   "forwardPorts": [
     1234
