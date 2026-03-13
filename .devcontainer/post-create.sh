@@ -11,9 +11,9 @@ source "${SCRIPT_DIR}/../scripts/utils/color.sh"
 echo "${BOLD}${BLUE}Running post-create tasks...${RESET}"
 
 echo "${BOLD}${GREEN}Ensuring Rust nightly components are installed...${RESET}"
-rustup toolchain install nightly-i686-unknown-linux-gnu
-rustup target add i686-unknown-linux-gnu --toolchain nightly-i686-unknown-linux-gnu
-rustup component add rust-src rustfmt clippy --toolchain nightly-i686-unknown-linux-gnu
+rustup toolchain install nightly
+rustup target add x86_64-unknown-linux-gnu --toolchain nightly
+rustup component add rust-src rustfmt clippy --toolchain nightly
 
 # Install non-critical devex packages
 echo "${BOLD}${GREEN}Installing additional tools via apt...${RESET}"
@@ -21,6 +21,7 @@ sudo apt update && sudo apt install -y \
 	bat \
 	shellcheck \
 	fzf \
+	tmux \
 	ripgrep \
 	gdb \
 	rust-gdb &&
@@ -29,6 +30,7 @@ sudo apt update && sudo apt install -y \
 # Install non-critical cargo devex tools
 echo "${BOLD}${GREEN}Installing additional tools via cargo...${RESET}"
 cargo install --locked \
+	just \
 	cargo-udeps \
 	cargo-nextest \
 	just-lsp
