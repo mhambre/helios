@@ -21,6 +21,7 @@ sudo apt update && sudo apt install -y \
 	bat \
 	shellcheck \
 	fzf \
+	tmux \
 	ripgrep \
 	gdb \
 	rust-gdb &&
@@ -29,6 +30,7 @@ sudo apt update && sudo apt install -y \
 # Install non-critical cargo devex tools
 echo "${BOLD}${GREEN}Installing additional tools via cargo...${RESET}"
 cargo install --locked \
+	just \
 	cargo-udeps \
 	cargo-nextest \
 	just-lsp
